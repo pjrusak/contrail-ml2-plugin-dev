@@ -1,0 +1,67 @@
+provider_config:
+  bms:
+    ntpserver: 0.pl.pool.ntp.org
+    nameserer: 8.8.8.8
+    ssh_user: root
+    ssh_private_key: /root/.ssh/id_rsa
+    domainsuffix: novalocal
+
+instances:
+  bms1:
+    provider: bms
+    ip: 192.168.100.6
+    roles:
+      config_database:
+      config:
+      control:
+      analytics_database:
+      analytics:
+      webui:
+      vrouter:
+      openstack:
+      openstack_compute:
+
+#global_configuration:
+#  CONTAINER_REGISTRY: opencontrailnightly
+#  REGISTRY_PRIVATE_INSECURE: False
+
+contrail_configuration:
+#  CONTRAIL_VERSION: ocata-master-82
+  CONTRAIL_VERSION: master-67
+  CLOUD_ORCHESTRATOR: openstack
+  CONTROLLER_NODES: 192.168.100.6
+  LOG_LEVEL: SYS_DEBUG
+  PHYSICAL_INTERFACE: eth0
+  VROUTER_GATEWAY: 192.168.100.1
+  AUTH_MODE: keystone
+#  AAA_MODE: rbac
+#  AUTH_MODE: noauth
+  AAA_MODE: no-auth
+  KEYSTONE_AUTH_ADMIN_PASSWORD: contrail123
+  KEYSTONE_AUTH_HOST: 192.168.100.6
+  KEYSTONE_AUTH_URL_VERSION: /v3
+#  KEYSTONE_AUTH_PROTO: https
+#  KEYSTONE_AUTH_INSECURE: False
+  RABBITMQ_NODE_PORT: 5673
+#  UPDATE_IMAGES: true
+#  UPGRADE_KERNEL: true
+  CONTROLLER_NODES: 192.168.100.6
+  CONTROL_NODES: 192.168.100.6
+  ANALYTICSDB_NODES: 192.168.100.6
+  WEBUI_NODES: 192.168.100.6
+  ANALYTICS_NODES: 192.168.100.6
+  CONFIGDB_NODES: 192.168.100.6
+  CONFIG_NODES: 192.168.100.6
+  CONFIG_NODEMGR__DEFAULTS__minimum_diskGB: 2
+  DATABASE_NODEMGR__DEFAULTS__minimum_diskGB: 2
+  JVM_EXTRA_OPTS: "-Xms1g -Xmx2g"
+#  SSL_ENABLE: False
+#  SSL_INSECURE: True
+#  SERVER_CERTFILE: '/etc/contrail/ssl/certs/server.pem'
+#  SERVER_KEYFILE: '/etc/contrail/ssl/private/server-privkey.pem'
+#  SERVER_CA_CERTFILE: '/etc/contrail/ssl/certs/ca-cert.pem'
+#  SERVER_CA_KEYFILE: '/etc/contrail/ssl/private/ca-key.pem'
+#  XMPP_SSL_ENABLE: False
+#  INTROSPECT_SSL_ENABLE: False
+#  SANDESH_SSL_ENABLE: False
+#  METADATA_SSL_ENABLE: False

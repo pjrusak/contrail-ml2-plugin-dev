@@ -1,0 +1,10 @@
+--- /home/centos/devstack/stack.sh.orig	2018-05-04 21:48:08.173149652 +0000
++++ /home/centos/devstack/stack.sh	2018-05-04 21:49:38.259207656 +0000
+@@ -725,6 +725,7 @@
+ # necessary to ensure that the constraints file is in place before we
+ # attempt to apply any constraints to pip installs.
+ git_clone $REQUIREMENTS_REPO $REQUIREMENTS_DIR $REQUIREMENTS_BRANCH
++sed -i "s/libvirt-python===2.5.0/libvirt-python===3.5.0/" ${REQUIREMENTS_DIR}/upper-constraints.txt
+ 
+ # Install package requirements
+ # Source it so the entire environment is available

@@ -1,0 +1,15 @@
+--- /etc/neutron/neutron.conf.orig	2018-05-03 17:23:47.417970002 +0000
++++ /etc/neutron/neutron.conf	2018-05-03 17:26:03.849158475 +0000
+@@ -873,7 +873,12 @@
+ password = contrail123
+ username = neutron
+ auth_url = http://192.168.100.6/identity_admin
++auth_protocol = http
+ auth_type = password
++admin_user = admin
++admin_tenant_name = admin
++admin_password = contrail123
++admin_token = contrail123
+ 
+ #
+ # From keystonemiddleware.auth_token
