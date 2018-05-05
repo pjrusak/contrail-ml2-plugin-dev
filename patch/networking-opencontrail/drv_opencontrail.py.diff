@@ -1,0 +1,11 @@
+--- drv_opencontrail.py.orig	2018-05-05 21:44:14.572460751 +0000
++++ drv_opencontrail.py	2018-05-05 21:45:25.663766634 +0000
+@@ -60,7 +60,7 @@
+             self._authn_body = body
+             self._authn_token = cfg.CONF.keystone_authtoken.admin_token
+             try:
+-                auth_token_url = cfg.CONF.APISERVER.auth_token_url
++                auth_token_url = cfg.CONF.keystone_authtoken.auth_url
+             except cfg.NoSuchOptError:
+                 auth_token_url = None
+ 

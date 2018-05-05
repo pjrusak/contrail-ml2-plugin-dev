@@ -43,22 +43,24 @@ cmd_on_remote_vm 'sudo cat /root/.ssh/id_rsa.pub | sudo tee --append /root/.ssh/
 
 cmd_on_remote_vm 'git clone https://github.com/Juniper/contrail-ansible-deployer'
 cmd_on_remote_vm 'git clone https://git.openstack.org/openstack-dev/devstack -b stable/ocata'
-cmd_on_remote_vm 'cp ~/config/instances-noc.yaml ~/contrail-ansible-deployer/config/instances.yaml'
-cmd_on_remote_vm 'cp ~/config/local-noc.conf ~/devstack/local.conf'
+cmd_on_remote_vm 'cp ~/config/contrail-ansible-deployer/instances-noc.yaml ~/contrail-ansible-deployer/config/instances.yaml'
+cmd_on_remote_vm 'cp ~/config/devstack/local-noc.conf ~/devstack/local.conf'
 
 cmd_on_remote_vm 'cd ~/contrail-ansible-deployer && sudo ansible-playbook -i inventory/ -e "{\"contrail_configuration\": {\"CLOUD_ORCHESTRATOR\": \"none\"}}" playbooks/configure_instances.yml'
 
 cmd_on_remote_vm 'sudo usermod -aG docker centos'
 
-cmd_on_remote_vm 'patch -p0 --verbose ~/devstack/stack.sh < ~/patch/stack.sh.diff'
+cmd_on_remote_vm 'patch -p0 --verbose ~/devstack/stack.sh < ~/patch/devstack/stack.sh.diff'
 cmd_on_remote_vm 'cd ~/devstack && ./stack.sh'
 
-cmd_on_remote_vm 'patch -p0 --verbose /etc/neutron/neutron.conf < ~/patch/neutron.conf.diff'
+cmd_on_remote_vm 'patch -p0 --verbose /etc/neutron/neutron.conf < ~/patch/devstack/neutron.conf.diff'
+cmd_on_remote_vm 'patch -p0 --verbose /opt/stack/networking-opencontrail/networking_opencontrail/drivers/drv_opencontrail.py < ~/patch/networking-opencontrail/neutron.conf.diff'
+cmd_on_remote_vm 'patch -p0 --verbose /opt/stack/networking-opencontrail/networking_opencontrail/ml2/opencontrail_sg_callback.py < ~/patch/networking-opencontrail/opencontrail_sg_callback.py.diff'
 cmd_on_remote_vm 'cd ~/contrail-ansible-deployer && sudo ansible-playbook -i inventory/ -e orchestrator=openstack -e skip_openstack=true playbooks/install_contrail.yml'
 cmd_on_remote_vm 'contrail-status'
 
-vrouter_agent_container=$(cmd_on_remote_vm "docker ps | grep vrouter-agent | tr -s' ' | cut -d' ' -f1")
-cmd_on_remote_vm "sudo docker cp ${vrouter_agent_container}:/usr/bin/vrouter-port-control /usr/bin"
+#vrouter_agent_container=$(cmd_on_remote_vm "docker ps | grep vrouter-agent | tr -s' ' | cut -d' ' -f1")
+cmd_on_remote_vm "sudo docker cp config_api_1:/usr/bin/vrouter-port-control /usr/bin"
 
 #config_api_container=$(cmd_on_remote_vm "docker ps | grep confi_api | tr -s' ' | cut -d' ' -f1")
 #cmd_on_remote_vm "docker cp ${config_api_container}:/usr/lib/python2.7/site-packages/vnc_openstack/neutron_plugin_db.py ."
