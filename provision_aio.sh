@@ -62,29 +62,3 @@ cmd_on_remote_vm 'contrail-status'
 #vrouter_agent_container=$(cmd_on_remote_vm "docker ps | grep vrouter-agent | tr -s' ' | cut -d' ' -f1")
 cmd_on_remote_vm "sudo docker cp config_api_1:/usr/bin/vrouter-port-control /usr/bin"
 
-#config_api_container=$(cmd_on_remote_vm "docker ps | grep confi_api | tr -s' ' | cut -d' ' -f1")
-#cmd_on_remote_vm "docker cp ${config_api_container}:/usr/lib/python2.7/site-packages/vnc_openstack/neutron_plugin_db.py ."
-
-#source devstack/openrc admin admin
-#openstack keypair create --public-key ~/.ssh/id_rsa.pub centos-key
-#openstack project list
-#openstack security group create contrail-demo --project d53dc00fc9a04808bd227ef785c40afe
-#openstack security group rule create --ingress --protocol icmp --remote-ip 0.0.0.0/0 contrail-demo
-#openstack security group rule create --egress --protocol icmp --remote-ip 0.0.0.0/0 contrail-demo
-#openstack security group rule create --ingress --protocol tcp --remote-ip 0.0.0.0/0 --dst-port 22 contrail-demo
-#openstack security group rule create --egress --protocol tcp --remote-ip 0.0.0.0/0 --dst-port 22 contrail-demo
-##openstack security group rule create --ingress --protocol udp --remote-ip 0.0.0.0/0 --dst-port 22 contrail-demo
-##openstack security group rule create --egress --protocol udp --remote-ip 0.0.0.0/0 --dst-port 22 contrail-demo
-#NET_ID=$(openstack network list | grep network | tr -d ' ' | awk -F '|' '{print $2}')
-#openstack server create --flavor m1.tiny --image cirros-0.3.4-x86_64-uec --nic net-id=${NET_ID} --key-name centos-home  --security-group contrail-demo --wait vm1
-
-## not use with devstack ##
-
-#wget http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
-#openstack image create cirros2 --disk-format qcow2 --public --container-format bare --file cirros-0.4.0-#x86_64-disk.img                              
-#openstack network create contrail-test
-#openstack subnet create --subnet-range 192.168.100.0/24 --network contrail-test subnet
-#openstack flavor create --ram 64 --disk 1 --vcpus 1 m1.nano
-#NET_ID=`openstack network list | grep contrail-test | awk -F '|' '{print $2}' | tr -d ' '` 
-#openstack server create --flavor m1.nano --image cirros2 --nic net-id=${NET_ID} --key-name centos-home #test_vm1
-#openstack server create --flavor m1.nano --image cirros2 --nic net-id=${NET_ID} --key-name centos-home #test_vm2 
