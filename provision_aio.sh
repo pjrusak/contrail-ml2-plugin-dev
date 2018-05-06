@@ -42,7 +42,7 @@ cmd_on_remote_vm "sudo yum install -y epel-release git ack tree wget vim jq patc
 
 kernel_version=$(cmd_on_remote_vm "uname -r")
 cmd_on_remote_vm "sudo yum update -y"
-updated_kernel_version=$(cmd_on_remote_vm "rpm -q kernel --last | head -1 | cut -d' ' -f1 | sed e 's/kernel-//'")
+updated_kernel_version=$(cmd_on_remote_vm "rpm -q kernel --last | head -1 | cut -d' ' -f1 | sed -e 's/kernel-//'")
 
 if [[ $kernel_version != $updated_kernel_version ]]
 then
@@ -66,8 +66,6 @@ cmd_on_remote_vm "sudo usermod -aG docker ${USER}"
 cmd_on_remote_vm 'patch -p0 --verbose ~/devstack/stack.sh < ~/patch/devstack/stack.sh.diff'
 cmd_on_remote_vm 'cd ~/devstack && ./stack.sh' -t
 
-cmd_on_remote_vm 'patch -p0 --verbose /etc/neutron/neutron.conf < ~/patch/devstack/neutron.conf.diff'
-cmd_on_remote_vm 'patch -p0 --verbose /opt/stack/networking-opencontrail/networking_opencontrail/drivers/drv_opencontrail.py < ~/patch/networking-opencontrail/neutron.conf.diff'
 cmd_on_remote_vm 'patch -p0 --verbose /opt/stack/networking-opencontrail/networking_opencontrail/ml2/opencontrail_sg_callback.py < ~/patch/networking-opencontrail/opencontrail_sg_callback.py.diff'
 cmd_on_remote_vm 'cd ~/contrail-ansible-deployer && sudo ansible-playbook -i inventory/ -e orchestrator=openstack -e skip_openstack=true playbooks/install_contrail.yml' -t
 cmd_on_remote_vm 'contrail-status'
