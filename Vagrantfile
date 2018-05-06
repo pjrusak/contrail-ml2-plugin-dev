@@ -11,6 +11,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       contrail_noc_config.vm.box_check_update = false
       contrail_noc_config.vm.hostname = "contrail-noc"
       contrail_noc_config.vm.network "private_network", ip: "192.168.100.6"
+      contrail_noc_config.vm.network "forwarded_port", guest: 80, host: 8080
+      contrail_noc_config.vm.network "forwarded_port", guest: 8180, host: 8180
+      contrail_noc_config.vm.network "forwarded_port", guest: 8143, host: 8143
       contrail_noc_config.vm.synced_folder ".", "/vagrant", disabled: true
       contrail_noc_config.ssh.forward_agent = true
       contrail_noc_config.ssh.insert_key = true
