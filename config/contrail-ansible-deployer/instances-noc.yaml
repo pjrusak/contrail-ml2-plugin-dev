@@ -21,30 +21,24 @@ instances:
       openstack:
       openstack_compute:
 
-#global_configuration:
-#  CONTAINER_REGISTRY: opencontrailnightly
-#  REGISTRY_PRIVATE_INSECURE: False
+global_configuration:
+  CONTAINER_REGISTRY: opencontrailnightly
 
 contrail_configuration:
-#  CONTRAIL_VERSION: ocata-master-82
-  CONTRAIL_VERSION: master-67
+  CONTRAIL_VERSION: ocata-master-82
   CLOUD_ORCHESTRATOR: openstack
   CONTROLLER_NODES: 192.168.100.6
   LOG_LEVEL: SYS_DEBUG
   PHYSICAL_INTERFACE: eth0
   VROUTER_GATEWAY: 192.168.100.1
   AUTH_MODE: keystone
-#  AAA_MODE: rbac
-#  AUTH_MODE: noauth
-  AAA_MODE: no-auth
+  AAA_MODE: rbac
+#  AAA_MODE: no-auth
   KEYSTONE_AUTH_ADMIN_PASSWORD: contrail123
   KEYSTONE_AUTH_HOST: 192.168.100.6
   KEYSTONE_AUTH_URL_VERSION: /v3
-#  KEYSTONE_AUTH_PROTO: https
-#  KEYSTONE_AUTH_INSECURE: False
   RABBITMQ_NODE_PORT: 5673
 #  UPDATE_IMAGES: true
-#  UPGRADE_KERNEL: true
   CONTROLLER_NODES: 192.168.100.6
   CONTROL_NODES: 192.168.100.6
   ANALYTICSDB_NODES: 192.168.100.6
