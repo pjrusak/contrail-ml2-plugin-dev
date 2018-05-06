@@ -66,7 +66,6 @@ cmd_on_remote_vm "sudo usermod -aG docker ${USER}"
 cmd_on_remote_vm 'patch -p0 --verbose ~/devstack/stack.sh < ~/patch/devstack/stack.sh.diff'
 cmd_on_remote_vm 'cd ~/devstack && ./stack.sh' -t
 
-cmd_on_remote_vm 'patch -p0 --verbose /opt/stack/networking-opencontrail/networking_opencontrail/ml2/opencontrail_sg_callback.py < ~/patch/networking-opencontrail/opencontrail_sg_callback.py.diff'
 cmd_on_remote_vm 'cd ~/contrail-ansible-deployer && sudo ansible-playbook -i inventory/ -e orchestrator=openstack -e skip_openstack=true playbooks/install_contrail.yml' -t
 cmd_on_remote_vm 'contrail-status'
 
