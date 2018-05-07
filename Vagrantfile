@@ -22,7 +22,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
          vb.cpus = 6
       end
       contrail_noc_config.vm.provision "shell" do |s|
-        ssh_pub_key = File.readlines("#{Dir.home}/.ssh/id_rsa.pub").first.strip
+        ssh_pub_key = File.readlines("#{Dir.home}/.ssh/kube_aws_rsa.pub").first.strip
         s.inline = <<-SHELL
           echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
         SHELL

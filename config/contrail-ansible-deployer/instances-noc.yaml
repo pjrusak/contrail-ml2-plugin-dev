@@ -3,7 +3,7 @@ provider_config:
     ntpserver: 0.pl.pool.ntp.org
     nameserer: 8.8.8.8
     ssh_user: root
-    ssh_private_key: /root/.ssh/id_rsa
+    ssh_private_key: /root/.ssh/root_rsa
     domainsuffix: novalocal
 
 instances:
