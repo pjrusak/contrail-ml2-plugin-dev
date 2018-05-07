@@ -9,13 +9,13 @@ copy_to_remote_vm() {
 
 wait_for_ssh(){
    local check_ssh_connectivity="${SSH_WRAPPER} -T exit"
-   
-   eval $check_ssh_connectivity
+
+   $check_ssh_connectivity
    while test $? -gt 0
    do
      sleep 15 
      echo "Waiting for ${TARGET} to boot up..."
-     eval $check_ssh_connectivity
+     $check_ssh_connectivity
    done
 }
 

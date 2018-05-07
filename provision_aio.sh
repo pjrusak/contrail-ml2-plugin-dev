@@ -33,7 +33,7 @@ updated_kernel_version=$(${SSH_WRAPPER} -T "rpm -q kernel --last | head -1 | cut
 
 if [[ $kernel_version != $updated_kernel_version ]]
 then
-  ${SSH_WRAPPER} -T "sudo reboot"
+  ${SSH_WRAPPER} -T "sudo reboot" || true
   wait_for_ssh || true
 fi
 
