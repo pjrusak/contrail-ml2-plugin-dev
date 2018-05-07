@@ -14,8 +14,8 @@ DEVSTACK_BRANCH=${DEVSTACK_BRANCH:-master}
 
 TOP_DIR=$(cd $(dirname "$0") && pwd)
 SSH_WRAPPER="ssh -i ${SSH_KEY} ${USER}@${TARGET}"
-source ${TOP_DIR}/lib/common.sh
 
+source ${TOP_DIR}/lib/common.sh
 
 if [[ ! -d "${TOP_DIR}/logs" ]]
 then
@@ -37,18 +37,18 @@ then
   wait_for_ssh || true
 fi
 
-${SSH_WRAPPER} -T << EOSSH
-    yes | ssh-keygen -b 4096 -f ~/.ssh/centos_rsa -N ""
-    yes | sudo ssh-keygen -b 4096 -f /root/.ssh/root_rsa -N ""
-EOSSH
+${SSH_WRAPPER} -T bash -c "'
+    yes | ssh-keygen -b 4096 -f ~/.ssh/centos_rsa -N \"\"
+    yes | sudo ssh-keygen -b 4096 -f /root/.ssh/root_rsa -N \"\"
+'"
 
-${SSH_WRAPPER} -T << EOSSH
+${SSH_WRAPPER} -T bash -c "'
     sudo cat /root/.ssh/root_rsa.pub | sudo tee --append /root/.ssh/authorized_keys
     git clone ${ANSIBLE_DEPLOYER_REPO} -b ${ANSIBLE_DEPLOYER_BRANCH}
     git clone ${DEVSTACK_REPO} -b ${DEVSTACK_BRANCH}
     cp ~/config/contrail-ansible-deployer/instances-noc.yaml ~/contrail-ansible-deployer/config/instances.yaml
     cp ~/config/devstack/local-noc.conf ~/devstack/local.conf
-EOSSH
+'"
 
 
 ${SSH_WRAPPER} -t bash -c "'
@@ -58,10 +58,10 @@ ${SSH_WRAPPER} -t bash -c "'
 	 playbooks/configure_instances.yml
 '"
 
-${SSH_WRAPPER} -T << EOSSH
+${SSH_WRAPPER} -T bash -c "'
     sudo usermod -aG docker ${USER}
     patch -p0 --verbose ~/devstack/stack.sh < ~/patch/devstack/stack.sh.diff
-EOSSH
+'"
 
 
 ${SSH_WRAPPER} -t bash -c "'
@@ -77,8 +77,8 @@ ${SSH_WRAPPER} -t bash -c "'
 '"
 
 
-${SSH_WRAPPER} -T << EOSSH
+${SSH_WRAPPER} -T bash -c "'
     contrail-status
     sudo docker cp vrouter_vrouter-agent_1:/usr/bin/vrouter-port-control /usr/bin
-EOSSH
+'"
 
