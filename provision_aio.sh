@@ -44,10 +44,16 @@ ${SSH_WRAPPER} -T bash -c "'
 
 ${SSH_WRAPPER} -T bash -c "'
     sudo cat /root/.ssh/root_rsa.pub | sudo tee --append /root/.ssh/authorized_keys
-    git clone ${ANSIBLE_DEPLOYER_REPO} -b ${ANSIBLE_DEPLOYER_BRANCH}
-    git clone ${DEVSTACK_REPO} -b ${DEVSTACK_BRANCH}
-    cp ~/config/contrail-ansible-deployer/instances-noc.yaml ~/contrail-ansible-deployer/config/instances.yaml
-    cp ~/config/devstack/local-noc.conf ~/devstack/local.conf
+    if [[ ! -d \"~/${ANSIBLE_DEPLOYER_REPO}\" ]]
+    then
+        git clone ${ANSIBLE_DEPLOYER_REPO} -b ${ANSIBLE_DEPLOYER_BRANCH}
+        cp ~/config/contrail-ansible-deployer/instances-noc.yaml ~/contrail-ansible-deployer/config/instances.yaml
+    fi
+    if [[ ! -d \"~/${ANSIBLE_DEPLOYER_REPO}\" ]]
+    then
+        git clone ${DEVSTACK_REPO} -b ${DEVSTACK_BRANCH}
+        cp ~/config/devstack/local-noc.conf ~/devstack/local.conf
+    fi
 '"
 
 
