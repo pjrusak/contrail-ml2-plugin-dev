@@ -5,6 +5,10 @@ USER="vagrant"
 TARGET="192.168.100.6"
 SSH_KEY="~/.ssh/id_rsa"
 
+USE_DOCKER_CE=True
+USE_DOCKER_CE=${USE_DOCKER_CE:-"False"}
+DOCKER_CE_REPO="https://download.docker.com/linux/centos/docker-ce.repo"
+
 ANSIBLE_DEPLOYER_REPO="https://github.com/Juniper/contrail-ansible-deployer"
 ANSIBLE_DEPLOYER_BRANCH=${ANSIBLE_DEPLOYER_BRANCH:-master}
  
@@ -25,7 +29,19 @@ fi
 copy_to_remote_vm "${TOP_DIR}/config"
 copy_to_remote_vm "${TOP_DIR}/patch"
 
-${SSH_WRAPPER} -T "sudo yum install -y epel-release git ack tree wget vim jq patch ansible-2.4.*"
+${SSH_WRAPPER} -T "sudo yum install -y epel-release git ack tree curl wget vim jq patch ansible-2.4.*"
+
+
+docker_repo_file=$(${SSH_WRAPPER} -T "yum repolist | grep -i docker-ce-stable | cut -d' ' -f1")
+
+if [[ $USE_DOCKER_CE && -z $docker_repo_file ]]
+then
+   ${SSH_WRAPPER} -t bash -c "'
+      sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+      sudo yum-config-manager --add-repo ${DOCKER_CE_REPO}
+      sudo yum install -y docker-ce
+   '"
+fi
 
 kernel_version=$(${SSH_WRAPPER} -T "uname -r")
 ${SSH_WRAPPER} -T "sudo yum update -y"
